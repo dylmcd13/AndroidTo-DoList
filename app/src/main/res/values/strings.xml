@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">TO-DOList</string>
     <string name="todo_list">To-Do List</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="name_task">Name of Task</string>
+    <string name="confirm_edit">Confirm Changes</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="confirm_delete">Delete</string>
 </resources>
