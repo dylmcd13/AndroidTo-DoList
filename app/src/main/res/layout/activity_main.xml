@@ -40,31 +40,7 @@
                 android:id="@+id/addingTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <View
-                    android:id="@+id/divider4"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:alpha=".7"
-                    android:background="?android:attr/fastScrollThumbDrawable"
-                    android:backgroundTint="#FFFFFF" />
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/todo_list"
-                    android:textSize="20sp" />
-
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:alpha=".7"
-                    android:background="?android:attr/fastScrollThumbDrawable"
-                    android:backgroundTint="#FFFFFF" />
-            </LinearLayout>
+                android:orientation="vertical"/>
         </ScrollView>
 
         <Button
