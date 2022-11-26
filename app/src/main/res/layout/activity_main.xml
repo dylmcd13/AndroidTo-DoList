@@ -10,6 +10,7 @@
     tools:context=".MainActivity" >
 
     <RelativeLayout
+        android:id="@+id/topBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/teal_200">
@@ -25,27 +26,55 @@
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/divider4"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:alpha=".7"
-        android:background="?android:attr/fastScrollThumbDrawable"
-        android:backgroundTint="#000000" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/todo_list"
-        android:textSize="20sp" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:alpha=".7"
-        android:background="?android:attr/fastScrollThumbDrawable"
-        android:backgroundTint="#000000" />
+            <LinearLayout
+                android:id="@+id/addingTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:alpha=".7"
+                    android:background="?android:attr/fastScrollThumbDrawable"
+                    android:backgroundTint="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_list"
+                    android:textSize="20sp" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:alpha=".7"
+                    android:background="?android:attr/fastScrollThumbDrawable"
+                    android:backgroundTint="#FFFFFF" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/addTaskBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:drawable/checkbox_off_background"
+            android:foreground="@android:drawable/ic_input_add" />
+    </RelativeLayout>
 
 </LinearLayout>

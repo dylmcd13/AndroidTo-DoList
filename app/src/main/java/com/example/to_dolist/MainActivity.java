@@ -13,7 +13,16 @@ import android.widget.Button;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.util.HashMap;
+
+/**
+ * Main Activity Class
+ */
 public class MainActivity extends AppCompatActivity {
+
+  /** HashMap for holding tasks */
+  private HashMap<String, Task> taskHashMap;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +32,8 @@ public class MainActivity extends AppCompatActivity {
     Log.i("Night Mode? ",": "+AppCompatDelegate.getDefaultNightMode());
 
     Button nightMode = findViewById(R.id.menu);
-    nightMode.setOnClickListener(changeDarkMode);
+
   }
 
-  private View.OnClickListener changeDarkMode = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-      Log.i("Night Mode? ",": "+AppCompatDelegate.getDefaultNightMode());
-    }
-  };
+
 }
