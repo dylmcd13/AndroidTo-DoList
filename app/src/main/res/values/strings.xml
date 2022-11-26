@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">TO-DOList</string>
     <string name="todo_list">To-Do List</string>
+    <string name="add_btn_description">Add a task to the list</string>
+    <string name="menu_btn_description">Access menu</string>
 </resources>

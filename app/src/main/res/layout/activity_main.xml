@@ -22,7 +22,9 @@
             android:layout_marginStart="10dp"
             android:alpha="1"
             android:background="@drawable/ic_menu_button"
-            android:backgroundTint="#000000" />
+            android:backgroundTint="#000000"
+            android:contentDescription="@string/menu_btn_description"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </RelativeLayout>
 
@@ -67,14 +69,14 @@
 
         <Button
             android:id="@+id/addTaskBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@android:drawable/checkbox_off_background"
-            android:foreground="@android:drawable/ic_input_add" />
+            android:background="@android:drawable/ic_input_add"
+            android:contentDescription="@string/add_btn_description" />
     </RelativeLayout>
 
 </LinearLayout>
