@@ -21,11 +21,17 @@ import java.util.HashMap;
 
 /**
  * Main Activity Class
+ * TODO: Make check box listener
+ * TODO: Assign IDs to each text box
  */
 public class MainActivity extends AppCompatActivity {
 
-  /** HashMap for holding tasks */
-  private HashMap<String, Task> taskHashMap;
+  /**
+   * HashMap for holding tasks
+   * Integer is ID number of task (prolly when making tasks with addBtn)
+   * Task is task object itself
+   */
+  private HashMap<Integer, Task> taskHashMap;
 
   /** Button for adding tasks */
   private Button addBtn;
@@ -66,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
     test.setTextColor(getResources().getColor(R.color.white));
     test.setTextSize(30);
     test.setText("TextView");
-
-    list.addView(test,textParams);
+    //test.setId(); //useful for later
+    list.addView(test, textParams);
 
 
     View dividerBottom = new View(list.getContext());

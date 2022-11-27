@@ -48,7 +48,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:theme="@style/ListDark"/>
+                android:theme="@style/ListDark">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        style="@style/AppThemeDark"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:buttonTint="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_toRightOf="@id/checkBox"
+                        android:text="TextView"
+                        android:textSize="32sp" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/white" />
+                </RelativeLayout>
+
+            </LinearLayout>
         </ScrollView>
 
         <Button
