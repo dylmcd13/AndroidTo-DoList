@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
   private Button addBtn;
 
   /** Parameters for text so the layout wraps the content and so the text is not all the way to left */
-  LinearLayout.LayoutParams textParams;
+  RelativeLayout.LayoutParams textParams;
 
   /** Parameters for list to have list border match parent size and have enough height to be visible */
-  LinearLayout.LayoutParams listParams;
+  RelativeLayout.LayoutParams listParams;
 
 
-  LinearLayout.LayoutParams checkBoxParams;
+  RelativeLayout.LayoutParams checkBoxParams;
 
   /** Layout for list */
   LinearLayout list;
@@ -59,15 +59,15 @@ public class MainActivity extends AppCompatActivity {
   }
 
   /**
-   * Initializes View Components and parameters for for the text and list borders
+   * Initializes known View Components at compile time and sets parameters for the text and list borders
    */
   private void initialize(){
     list = findViewById(R.id.addingTest);
     addBtn = findViewById(R.id.addTaskBtn);
-    listParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5);
-    textParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    listParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10);
+    textParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     textParams.leftMargin = 100;
-    checkBoxParams = new LinearLayout.LayoutParams(30,30);
+    checkBoxParams = new RelativeLayout.LayoutParams(30,30);
     addBtn.setOnClickListener(addingTaskBox);
   }
 
@@ -75,11 +75,13 @@ public class MainActivity extends AppCompatActivity {
    * When button is clicked, add checkbox, text and a border below the text to differentiate between tasks
    */
   private final View.OnClickListener addingTaskBox = v -> {
-    RelativeLayout taskBox = new RelativeLayout(this);
+    RelativeLayout taskBox = new RelativeLayout(list.getContext());
 
 
     CheckBox box = new CheckBox(taskBox.getContext());
     box.setText("");
+    //box.setBackgroundColor(getResources().getColor(R.color.white));
+    //box.layout(10,5,1,0);
     //box.layout(0,22,0,0);
     //box.setPadding(10,12,10,10);
 
@@ -97,10 +99,11 @@ public class MainActivity extends AppCompatActivity {
 
     View dividerBottom = new View(taskBox.getContext());
     dividerBottom.setBackgroundColor(getResources().getColor(R.color.white));
-    dividerBottom.setTextAlignment(View.TEXT_ALIGNMENT_INHERIT);
+
 
 
     taskBox.addView(dividerBottom,listParams);
+
     list.addView(taskBox);
   };
 
