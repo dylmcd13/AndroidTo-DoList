@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -75,34 +76,32 @@ public class MainActivity extends AppCompatActivity {
    * When button is clicked, add checkbox, text and a border below the text to differentiate between tasks
    */
   private final View.OnClickListener addingTaskBox = v -> {
-    RelativeLayout taskBox = new RelativeLayout(list.getContext());
+    RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text,null);
 
-
-    CheckBox box = new CheckBox(taskBox.getContext());
-    box.setText("");
+//    CheckBox box = new CheckBox(taskBox.getContext());
+//    box.setText("");
     //box.setBackgroundColor(getResources().getColor(R.color.white));
     //box.layout(10,5,1,0);
     //box.layout(0,22,0,0);
     //box.setPadding(10,12,10,10);
 
-    taskBox.addView(box);
+//    taskBox.addView(box);
 
 
-    TextView test = new TextView(taskBox.getContext());
-    //test.setTextColor(getResources().getColor(R.color.white));
-    test.setTextSize(30);
-    test.setText("TextView");
+//    EditText test = new EditText(taskBox.getContext());
+//    //test.setTextColor(getResources().getColor(R.color.white));
+//    test.setTextSize(30);
+//    test.setText("TextView");
 
     //test.setId(); //useful for later
-    taskBox.addView(test, textParams);
+//    taskBox.addView(test, textParams);
 
 
-    View dividerBottom = new View(taskBox.getContext());
-    dividerBottom.setBackgroundColor(getResources().getColor(R.color.white));
+//    View dividerBottom = new View(taskBox.getContext());
 
 
 
-    taskBox.addView(dividerBottom,listParams);
+//    taskBox.addView(dividerBottom,listParams);
 
     list.addView(taskBox);
   };
