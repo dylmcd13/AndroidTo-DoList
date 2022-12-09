@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:keepScreenOn="true"
     android:orientation="vertical"
     android:theme="@style/AppThemeDark"
     tools:context=".MainActivity">
@@ -40,14 +39,15 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name">
 
             <LinearLayout
                 android:id="@+id/addingTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:theme="@style/ListDark"/>
+                android:theme="@style/ListDark" />
         </ScrollView>
 
         <Button

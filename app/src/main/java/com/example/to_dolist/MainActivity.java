@@ -10,6 +10,8 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +24,12 @@ import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -32,11 +40,9 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
   /**
-   * HashMap for holding tasks
-   * Integer is ID number of task (prolly when making tasks with addBtn)
-   * Task is task object itself
+   * ArrayList for holding tasks
    */
-  private HashMap<Integer, Task> taskHashMap;
+  private ArrayList<Task> tasks = new ArrayList<>();
 
   /** Button for adding tasks */
   private Button addBtn;
@@ -50,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     this.initialize();
+//    File file = new File(this.getFilesDir(), "tasks");
+//    file.
+    String[] files = this.fileList();
+//    Log.i("test",Arrays.toString(files));
   }
 
   /**
@@ -65,10 +75,43 @@ public class MainActivity extends AppCompatActivity {
    * When button is clicked, add checkbox, text and a border below the text to differentiate between tasks
    */
   private final View.OnClickListener addingTaskBox = v -> {
-    RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text,null);
-    taskBox.requestFocus();
     ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v.getRootView(),InputMethodManager.SHOW_IMPLICIT);
+    addTask();
+  };
+
+  private void addTask(){
+    RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text,null);
+    EditText editableText = taskBox.findViewById(R.id.editTextBox2);
+    editableText.setOnFocusChangeListener(textBoxChangeListener);
+    Log.i("Is this task box?",String.valueOf(editableText.getId()));
+    tasks.add(new Task(""));//, taskBox.findViewById(R.id.nameOfTask)));
+    taskBox.requestFocus();
     list.addView(taskBox);
+  }
+
+  //TODO: change tasks(0) to get taskbox that is touched so we can update arraylist
+  private View.OnFocusChangeListener textBoxChangeListener = new View.OnFocusChangeListener() {
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+      if(hasFocus){
+        EditText text = v.findViewById(R.id.editTextBox2);
+        tasks.get(0).changeTask(text.getText().toString());
+        Log.i("Task at 0",tasks.get(0).getTaskName());
+      }
+    }
+  };
+
+  private View.OnTouchListener textBoxTouchListener = new View.OnTouchListener() {
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+      if(event.getAction() == MotionEvent.ACTION_DOWN){
+        v.performClick();
+
+
+        return true;
+      }
+      return false;
+    }
   };
 
 }

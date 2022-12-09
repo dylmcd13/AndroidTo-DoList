@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <CheckBox
         android:id="@+id/checkBox"
         style="@style/AppThemeDark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignWithParentIfMissing="false"
-        android:layout_alignBaseline="@id/editTextBox"
+        android:layout_alignBaseline="@id/editTextBox2"
         android:layout_alignParentBottom="false"
         android:layout_centerVertical="false"
         android:buttonTint="#FFFFFF" />
 
     <EditText
-        android:id="@+id/editTextBox"
+        android:id="@+id/editTextBox2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/checkBox"
-        android:backgroundTint="#00FFFFFF"
-        android:textColor="@color/white"
-        android:inputType="text"
         android:autofillHints="null"
-        android:hint="@string/task_value"/>
+        android:backgroundTint="#00FFFFFF"
+        android:hint="@string/task_value"
+        android:inputType="text"
+        android:textColor="@color/white" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_alignBottom="@id/editTextBox"
+        android:layout_alignBottom="@id/editTextBox2"
         android:layout_alignParentBottom="false"
         android:background="@color/white" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="false"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="true"
+        android:background="@android:drawable/btn_dialog" />
 
 </RelativeLayout>
 
