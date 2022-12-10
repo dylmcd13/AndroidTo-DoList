@@ -3,6 +3,7 @@ package com.example.to_dolist;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,10 +24,12 @@ import android.view.View;
 import android.widget.Button;
 import java.io.Serializable;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -48,30 +51,51 @@ public class Delete extends AppCompatActivity {
 
         Button del_button = (Button) findViewById(R.id.delete_button);
         del_button.setOnClickListener(deleteListener);
+
+        ImageButton home_button = (ImageButton) findViewById(R.id.home_button);
+        home_button.setOnClickListener(homeListener);
+
+        ImageButton tasks_button = (ImageButton) findViewById(R.id.tasks_button);
+        tasks_button.setOnClickListener(taskListener);
     }
 
     private View.OnClickListener deleteListener = new View.OnClickListener() {
         Context context;
         @Override
         public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setCancelable(true);
-            builder.setTitle("Are you sure you want to delete?");
-            builder.setMessage("Message");
-            builder.setPositiveButton("Confirm",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
+            new AlertDialog.Builder(Delete.this)
+                    .setTitle("Confirm")
+                    .setMessage("Do you really want to delete this task?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            MediaPlayer ring= MediaPlayer.create(Delete.this,R.raw.garbage);
+                            ring.start();
+
+                            Toast.makeText(Delete.this, "Task Deleted", Toast.LENGTH_SHORT).show();
+                        }})
+                    .setNegativeButton(android.R.string.no,new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            dialog.cancel();
+                        }
+                    }).show();
+        }
+    };
+
+    private View.OnClickListener homeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(Delete.this, Delete.class));
+        }
+    };
+
+    private View.OnClickListener taskListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(Delete.this, Delete.class));
         }
     };
 }
