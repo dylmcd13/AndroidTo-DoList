@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
   /**
    * ArrayList for holding tasks
    */
-  private ArrayList<Task> tasks = new ArrayList<>();
+  private HashMap<Integer, Task> tasks = new HashMap<>();
 
   /** Button for adding tasks */
   private Button addBtn;
@@ -75,17 +75,21 @@ public class MainActivity extends AppCompatActivity {
    * When button is clicked, add checkbox, text and a border below the text to differentiate between tasks
    */
   private final View.OnClickListener addingTaskBox = v -> {
-    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v.getRootView(),InputMethodManager.SHOW_IMPLICIT);
     addTask();
+    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v.getRootView(),InputMethodManager.SHOW_IMPLICIT);
+
   };
 
   private void addTask(){
     RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text,null);
+    taskBox.setId(View.generateViewId());
+//    Log.i("TaskBox ID?",String.valueOf(taskBox.getId()));
     EditText editableText = taskBox.findViewById(R.id.editTextBox2);
     editableText.setOnFocusChangeListener(textBoxChangeListener);
-    Log.i("Is this task box?",String.valueOf(editableText.getId()));
-    tasks.add(new Task(""));//, taskBox.findViewById(R.id.nameOfTask)));
-    taskBox.requestFocus();
+
+    tasks.put(taskBox.getId(),new Task(""));
+//    tasks.add(taskBox.getId(),new Task(""));//, taskBox.findViewById(R.id.nameOfTask)));
+//    taskBox.requestFocus();
     list.addView(taskBox);
   }
 
@@ -94,9 +98,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
       if(hasFocus){
-        EditText text = v.findViewById(R.id.editTextBox2);
-        tasks.get(0).changeTask(text.getText().toString());
-        Log.i("Task at 0",tasks.get(0).getTaskName());
+        RelativeLayout taskBox = v.findViewById(R.id.relativeLayoutBox);
+        Log.i("TaskBox ID FOCUS CHANGE",String.valueOf(taskBox.getId()));
+        Task taskTest = tasks.get(taskBox.getId());
+//        tasks.get(0).changeTask(text.getText().toString());
+        Log.i("Task at ?",taskTest.getTaskName());
       }
     }
   };
