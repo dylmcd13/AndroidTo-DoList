@@ -31,11 +31,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class Delete extends AppCompatActivity {
+
+    int taskBoxID;
+    String taskName;
+    TextView deleteTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent deleteIntent = getIntent();
+        taskName = deleteIntent.getStringExtra("nameOfTask");
+        taskBoxID = deleteIntent.getIntExtra("taskBoxID",-1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_task);
+
+        deleteTextView = findViewById(R.id.nameOfTask);
+        deleteTextView.setText(taskName);
 
         Button del_button = (Button) findViewById(R.id.delete_button);
         del_button.setOnClickListener(deleteListener);
