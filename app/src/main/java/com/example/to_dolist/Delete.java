@@ -31,6 +31,7 @@ import android.os.Bundle;
 import org.w3c.dom.Text;
 
 public class Delete extends AppCompatActivity {
+
     int taskBoxID;
     String taskName;
     TextView deleteTextView;

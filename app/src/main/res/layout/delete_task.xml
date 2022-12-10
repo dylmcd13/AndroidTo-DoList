@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:orientation="vertical"
-    android:theme="@style/AppTheme">
+    android:theme="@style/AppThemeDark">
 
     <RelativeLayout
         android:layout_width="match_parent"
