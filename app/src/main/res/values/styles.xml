@@ -10,11 +10,17 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@color/dark_mode_background</item>
         <item name="android:statusBarColor">@color/dark_mode_background</item>
+        <item name="android:buttonTint">@color/white</item>
     </style>
 
     <style name="ListDark" parent="AppThemeDark">
         <item name="android:layout_marginLeft">0dp</item>
     </style>
+
+    <style name="EditTextTheme" parent="AppThemeDark">
+        <item name="android:backgroundTint">@color/blank_edit_text_view</item>
+    </style>
+
 
 
 </resources>

@@ -10,16 +10,26 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -30,23 +40,13 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
   /**
-   * HashMap for holding tasks
-   * Integer is ID number of task (prolly when making tasks with addBtn)
-   * Task is task object itself
+   * ArrayList for holding tasks
    */
-  private HashMap<Integer, Task> taskHashMap;
+  private HashMap<Integer, Task> tasks = new HashMap<>();
 
   /** Button for adding tasks */
   private Button addBtn;
 
-  /** Parameters for text so the layout wraps the content and so the text is not all the way to left */
-  LinearLayout.LayoutParams textParams;
-
-  /** Parameters for list to have list border match parent size and have enough height to be visible */
-  LinearLayout.LayoutParams listParams;
-
-
-  LinearLayout.LayoutParams checkBoxParams;
 
   /** Layout for list */
   LinearLayout list;
@@ -56,18 +56,18 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     this.initialize();
+//    File file = new File(this.getFilesDir(), "tasks");
+//    file.
+    String[] files = this.fileList();
+//    Log.i("test",Arrays.toString(files));
   }
 
   /**
-   * Initializes View Components and parameters for for the text and list borders
+   * Initializes known View Components at compile time and sets parameters for the text and list borders
    */
   private void initialize(){
     list = findViewById(R.id.addingTest);
     addBtn = findViewById(R.id.addTaskBtn);
-    listParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5);
-    textParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    textParams.leftMargin = 100;
-    checkBoxParams = new LinearLayout.LayoutParams(30,30);
     addBtn.setOnClickListener(addingTaskBox);
   }
 
@@ -75,33 +75,49 @@ public class MainActivity extends AppCompatActivity {
    * When button is clicked, add checkbox, text and a border below the text to differentiate between tasks
    */
   private final View.OnClickListener addingTaskBox = v -> {
-    RelativeLayout taskBox = new RelativeLayout(this);
+    addTask();
+    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v.getRootView(),InputMethodManager.SHOW_IMPLICIT);
 
+  };
 
-    CheckBox box = new CheckBox(taskBox.getContext());
-    box.setText("");
-    //box.layout(0,22,0,0);
-    //box.setPadding(10,12,10,10);
+  private void addTask(){
+    RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text,null);
+    taskBox.setId(View.generateViewId());
+//    Log.i("TaskBox ID?",String.valueOf(taskBox.getId()));
+    EditText editableText = taskBox.findViewById(R.id.editTextBox2);
+    editableText.setOnFocusChangeListener(textBoxChangeListener);
 
-    taskBox.addView(box);
-
-
-    TextView test = new TextView(taskBox.getContext());
-    //test.setTextColor(getResources().getColor(R.color.white));
-    test.setTextSize(30);
-    test.setText("TextView");
-
-    //test.setId(); //useful for later
-    taskBox.addView(test, textParams);
-
-
-    View dividerBottom = new View(taskBox.getContext());
-    dividerBottom.setBackgroundColor(getResources().getColor(R.color.white));
-    dividerBottom.setTextAlignment(View.TEXT_ALIGNMENT_INHERIT);
-
-
-    taskBox.addView(dividerBottom,listParams);
+    tasks.put(taskBox.getId(),new Task(""));
+//    tasks.add(taskBox.getId(),new Task(""));//, taskBox.findViewById(R.id.nameOfTask)));
+//    taskBox.requestFocus();
     list.addView(taskBox);
+  }
+
+  //TODO: change tasks(0) to get taskbox that is touched so we can update arraylist
+  private View.OnFocusChangeListener textBoxChangeListener = new View.OnFocusChangeListener() {
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+      if(hasFocus){
+        RelativeLayout taskBox = v.findViewById(R.id.relativeLayoutBox);
+        Log.i("TaskBox ID FOCUS CHANGE",String.valueOf(taskBox.getId()));
+        Task taskTest = tasks.get(taskBox.getId());
+//        tasks.get(0).changeTask(text.getText().toString());
+        Log.i("Task at ?",taskTest.getTaskName());
+      }
+    }
+  };
+
+  private View.OnTouchListener textBoxTouchListener = new View.OnTouchListener() {
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+      if(event.getAction() == MotionEvent.ACTION_DOWN){
+        v.performClick();
+
+
+        return true;
+      }
+      return false;
+    }
   };
 
 }
