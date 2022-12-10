@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayoutBox"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/relativeLayoutBox">
+    android:layout_height="50dp">
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -24,21 +25,22 @@
         android:backgroundTint="#00FFFFFF"
         android:hint="@string/task_value"
         android:inputType="text"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignBottom="@id/editTextBox2"
-        android:layout_alignParentBottom="false"
+        android:layout_alignParentBottom="true"
         android:background="@color/white" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="false"
         android:layout_centerInParent="false"
         android:layout_centerVertical="true"

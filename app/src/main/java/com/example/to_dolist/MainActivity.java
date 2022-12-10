@@ -82,14 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
   private void addTask(){
     RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text,null);
-    taskBox.setId(View.generateViewId());
-//    Log.i("TaskBox ID?",String.valueOf(taskBox.getId()));
     EditText editableText = taskBox.findViewById(R.id.editTextBox2);
     editableText.setOnFocusChangeListener(textBoxChangeListener);
-
-    tasks.put(taskBox.getId(),new Task(""));
-//    tasks.add(taskBox.getId(),new Task(""));//, taskBox.findViewById(R.id.nameOfTask)));
-//    taskBox.requestFocus();
+    editableText.setId(View.generateViewId());
+    tasks.put(editableText.getId(),new Task(""));
     list.addView(taskBox);
   }
 
@@ -98,11 +94,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
       if(hasFocus){
-        RelativeLayout taskBox = v.findViewById(R.id.relativeLayoutBox);
-        Log.i("TaskBox ID FOCUS CHANGE",String.valueOf(taskBox.getId()));
-        Task taskTest = tasks.get(taskBox.getId());
-//        tasks.get(0).changeTask(text.getText().toString());
-        Log.i("Task at ?",taskTest.getTaskName());
+        try{
+          EditText textBoxTest = findViewById(v.getId());
+          Task taskTest = tasks.get(v.getId());
+          taskTest.changeTask(textBoxTest.getText().toString());
+        }catch(NullPointerException e){
+          Log.e("NULL",e.toString());
+        }
       }
     }
   };
