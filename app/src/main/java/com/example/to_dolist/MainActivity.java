@@ -1,35 +1,21 @@
 package com.example.to_dolist;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.google.android.material.appbar.MaterialToolbar;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -42,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
   /**
    * ArrayList for holding tasks
    */
-  private HashMap<Integer, Task> tasks = new HashMap<>();
+  private final HashMap<Integer, Task> tasks = new HashMap<>();
 
   /** Button for adding tasks */
   private Button addBtn;
@@ -82,39 +68,47 @@ public class MainActivity extends AppCompatActivity {
 
   private void addTask(){
     RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text,null);
+    taskBox.setId(View.generateViewId());
     EditText editableText = taskBox.findViewById(R.id.editTextBox2);
     editableText.setOnFocusChangeListener(textBoxChangeListener);
     editableText.setId(View.generateViewId());
     tasks.put(editableText.getId(),new Task(""));
+
+    Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
+    deleteBtn.setId(View.generateViewId());
+    deleteBtn.setOnClickListener(deleteListener);
     list.addView(taskBox);
   }
 
   //TODO: change tasks(0) to get taskbox that is touched so we can update arraylist
-  private View.OnFocusChangeListener textBoxChangeListener = new View.OnFocusChangeListener() {
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-      if(hasFocus){
-        try{
-          EditText textBoxTest = findViewById(v.getId());
-          Task taskTest = tasks.get(v.getId());
-          taskTest.changeTask(textBoxTest.getText().toString());
-        }catch(NullPointerException e){
-          Log.e("NULL",e.toString());
-        }
+  private final View.OnFocusChangeListener textBoxChangeListener = (v, hasFocus) -> {
+    if(hasFocus){
+      try{
+        EditText textBoxTest = findViewById(v.getId());
+        Task taskTest = tasks.get(v.getId());
+        taskTest.changeTask(textBoxTest.getText().toString());
+      }catch(NullPointerException e){
+        Log.e("NULL",e.toString());
       }
     }
   };
 
-  private View.OnTouchListener textBoxTouchListener = new View.OnTouchListener() {
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-      if(event.getAction() == MotionEvent.ACTION_DOWN){
-        v.performClick();
-
-
-        return true;
-      }
-      return false;
+  /**
+   * Listener for deleting tasks
+   *
+   * Grabs TextBox layout and retrieves textBox info from the child
+   */
+  private View.OnClickListener deleteListener = v -> {
+    try{
+      RelativeLayout rel = (RelativeLayout) v.getParent();
+      EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
+      //TODO: get text info and send to delete activity
+      Intent deleteActivity = new Intent(this, Delete.class);
+      deleteActivity.putExtra("taskBoxID",textBox.getId());
+      deleteActivity.putExtra("nameOfTask",textBox.getText().toString());
+      this.startActivity(deleteActivity);
+    }catch(NullPointerException e){
+      Log.e("ERROR",e.toString());
     }
   };
 
