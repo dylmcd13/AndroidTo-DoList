@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     this.initialize();
-    //TaskBoxLayout test = new TaskBoxLayout(findViewById(R.id.addingTest));
   }
 
   /**
@@ -58,57 +57,26 @@ public class MainActivity extends AppCompatActivity {
    * When button is clicked, add checkbox, text and a border below the text to differentiate between tasks
    */
   private final View.OnClickListener addingTaskBox = v -> {
-    addTask(v);
+    addTask();
     ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v.getRootView(),InputMethodManager.SHOW_IMPLICIT);
   };
 
-  private void addTask(View v){
+  private void addTask(){
     try {
-//    Log.i("Adding Test?",testView.toString());
-
-//    ViewGroup testViewGroup = (ViewGroup) v.getRootView().findViewById(R.id.relativeLayoutTasks);
       Log.i("Linear Layout in MAIN?",list.toString());
       TaskBoxLayout task = new TaskBoxLayout(this,tasks.size());
       tasks.add(task);
       list.addView(task.getTaskBox());
-
-      //list.addView(test.getTaskBox());
-
-//    Log.i("Parent of v",testViewGroup.toString());
-//    list.addView(new TaskBoxLayout());
-
-
-/** SOMETHING PAST HERE MAKES IT WORK :) */
-
-      /**
-       * THIS WORKS
-       *    RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
-       *    list.addView(taskBox);
-       */
-
-
-//    taskBox.setId(View.generateViewId());
-//    EditText editableText = taskBox.findViewById(R.id.editTextBox2);
-//    editableText.setOnFocusChangeListener(textBoxChangeListener);
-//    editableText.setId(View.generateViewId());
-//    tasks.put(editableText.getId(),new Task(""));
-//
-//    Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
-//    deleteBtn.setId(View.generateViewId());
-//    deleteBtn.setOnClickListener(deleteListener);
-
     }catch(IllegalStateException e){
       Log.e("ILLEGAL STATE",e.toString());
     }
   }
 
-  //TODO: change tasks(0) to get taskbox that is touched so we can update arraylist
   private final View.OnFocusChangeListener textBoxChangeListener = (v, hasFocus) -> {
     if(hasFocus){
       try{
         EditText textBoxTest = findViewById(v.getId());
-//        Task taskTest = tasks.get(v.getId());
-//        taskTest.changeTask(textBoxTest.getText().toString());
+        //TODO: make this update task obj in array
       }catch(NullPointerException e){
         Log.e("NULL",e.toString());
       }
