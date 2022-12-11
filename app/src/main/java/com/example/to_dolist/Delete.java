@@ -5,33 +5,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import android.app.Activity;
+
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentSender;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import java.io.Serializable;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.net.Uri;
-import android.os.Bundle;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Delete extends AppCompatActivity {
 
@@ -43,13 +29,16 @@ public class Delete extends AppCompatActivity {
     /**
      * Name of task
      */
+
     String taskName;
 
     /**
      * TextView for name of task
      */
     TextView deleteTextView;
-
+   
+   ArrayList<TaskBoxLayout> tasks;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent deleteIntent = getIntent();
@@ -58,12 +47,15 @@ public class Delete extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_task);
-
+        tasks = (ArrayList<TaskBoxLayout>) getIntent().getSerializableExtra("tasks");
         deleteTextView = findViewById(R.id.nameOfTask);
         deleteTextView.setText(taskName);
 
         Button del_button = (Button) findViewById(R.id.delete_button);
         del_button.setOnClickListener(deleteListener);
+
+        Button cancel_button = (Button) findViewById(R.id.cancel_button);
+        cancel_button.setOnClickListener(cancelListener);
 
         ImageButton home_button = (ImageButton) findViewById(R.id.home_button);
         home_button.setOnClickListener(homeListener);
@@ -85,7 +77,8 @@ public class Delete extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             MediaPlayer ring= MediaPlayer.create(Delete.this,R.raw.garbage);
                             ring.start();
-
+                            tasks.remove(indexOfTask);
+                            startActivity(new Intent(Delete.this, MainActivity.class));
                             Toast.makeText(Delete.this, "Task Deleted", Toast.LENGTH_SHORT).show();
                         }})
                     .setNegativeButton(android.R.string.no,new DialogInterface.OnClickListener() {
@@ -98,17 +91,27 @@ public class Delete extends AppCompatActivity {
         }
     };
 
+    private View.OnClickListener cancelListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(Delete.this, MainActivity.class));
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        }
+    };
+
     private View.OnClickListener homeListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(Delete.this, Delete.class));
+            startActivity(new Intent(Delete.this, MainActivity.class));
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
     };
 
     private View.OnClickListener taskListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(Delete.this, Delete.class));
+            startActivity(new Intent(Delete.this, MainActivity.class));
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     };
 }
