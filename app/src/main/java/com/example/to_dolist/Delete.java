@@ -21,18 +21,33 @@ import java.util.HashMap;
 
 public class Delete extends AppCompatActivity {
 
-    int indexOfTasks;
+    /**
+     * Index of task in the ArrayList
+     */
+    int indexOfTask;
+
+    /**
+     * Name of task
+     */
+
     String taskName;
+
+    /**
+     * TextView for name of task
+     */
     TextView deleteTextView;
-    ArrayList<TaskBoxLayout> tasks;
+   
+   ArrayList<TaskBoxLayout> tasks;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent deleteIntent = getIntent();
-        String task_list;
+        taskName = deleteIntent.getStringExtra("nameOfTask");
+        indexOfTask = deleteIntent.getIntExtra("indexedAt",-1);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_task);
         tasks = (ArrayList<TaskBoxLayout>) getIntent().getSerializableExtra("tasks");
-        indexOfTasks = deleteIntent.getIntExtra("indexedAt",-1);
         deleteTextView = findViewById(R.id.nameOfTask);
         deleteTextView.setText(taskName);
 
@@ -62,7 +77,7 @@ public class Delete extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             MediaPlayer ring= MediaPlayer.create(Delete.this,R.raw.garbage);
                             ring.start();
-                            tasks.remove(indexOfTasks);
+                            tasks.remove(indexOfTask);
                             startActivity(new Intent(Delete.this, MainActivity.class));
                             Toast.makeText(Delete.this, "Task Deleted", Toast.LENGTH_SHORT).show();
                         }})
