@@ -35,14 +35,27 @@ import org.w3c.dom.Text;
 
 public class Delete extends AppCompatActivity {
 
-    int taskBoxID;
+    /**
+     * Index of task in the ArrayList
+     */
+    int indexOfTask;
+
+    /**
+     * Name of task
+     */
     String taskName;
+
+    /**
+     * TextView for name of task
+     */
     TextView deleteTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent deleteIntent = getIntent();
         taskName = deleteIntent.getStringExtra("nameOfTask");
-        taskBoxID = deleteIntent.getIntExtra("taskBoxID",-1);
+        indexOfTask = deleteIntent.getIntExtra("indexedAt",-1);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_task);
 

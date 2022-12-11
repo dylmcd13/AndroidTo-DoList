@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:theme="@style/AppThemeDark"
     android:keepScreenOn="true"
+    android:id="@+id/rootLinearLayout"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -48,7 +49,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:theme="@style/ListDark" />
+                android:theme="@style/ListDark" >
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/relativeLayoutTasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </LinearLayout>
+
         </ScrollView>
 
         <Button
