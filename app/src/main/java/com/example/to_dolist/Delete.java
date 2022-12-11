@@ -1,10 +1,12 @@
 package com.example.to_dolist;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +26,9 @@ import java.util.HashMap;
 public class Delete extends AppCompatActivity {
 
     /**
-     * Index of task in the ArrayList
+     * ID of task box in the HashMap
      */
-    int indexOfTask;
+    int taskBoxID;
 
     /**
      * Name of task
@@ -42,12 +46,20 @@ public class Delete extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent deleteIntent = getIntent();
-        taskName = deleteIntent.getStringExtra("nameOfTask");
-        indexOfTask = deleteIntent.getIntExtra("indexedAt",-1);
+        taskBoxID = deleteIntent.getIntExtra("taskBoxID",-1);
+        taskName = deleteIntent.getStringExtra("taskToDelete");
+        Log.i("TaskBoxID IN DELETE", String.valueOf(taskBoxID));
+        Log.i("taskToDelete IN DELETE",taskName);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_task);
-        tasks = (ArrayList<TaskBoxLayout>) getIntent().getSerializableExtra("tasks");
+
+//        Bundle arrayListBundle = deleteIntent.getBundleExtra("BUNDLE");
+//        Log.i("tasks",tasks.get(indexOfTask).toString());
+//        tasks = (ArrayList<TaskBoxLayout>) deleteIntent.getSerializableExtra("tasks");
+        //tasks = deleteIntent.getExtra;
+//        for(TaskBoxLayout taskLayout : tasks)
+//          Log.i("task",taskLayout.getTask().getTaskName());
         deleteTextView = findViewById(R.id.nameOfTask);
         deleteTextView.setText(taskName);
 
@@ -77,9 +89,18 @@ public class Delete extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             MediaPlayer ring= MediaPlayer.create(Delete.this,R.raw.garbage);
                             ring.start();
-                            tasks.remove(indexOfTask);
-                            startActivity(new Intent(Delete.this, MainActivity.class));
+                            Intent list = new Intent();
+                            list.putExtra("taskToDelete",taskName);
+                            list.putExtra("taskBoxID",taskBoxID);
+                            setResult(Activity.RESULT_OK,list);
+
                             Toast.makeText(Delete.this, "Task Deleted", Toast.LENGTH_SHORT).show();
+                            ring.stop();
+                            ring.reset();
+                            ring.release();
+                            finish();
+//                            startActivity(list);
+
                         }})
                     .setNegativeButton(android.R.string.no,new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {

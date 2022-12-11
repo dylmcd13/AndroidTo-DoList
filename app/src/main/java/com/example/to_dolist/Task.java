@@ -1,5 +1,7 @@
 package com.example.to_dolist;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -7,21 +9,60 @@ import android.widget.EditText;
 
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import java.io.Serializable;
+
 /**
  * Class to hold task information
  */
-public class Task {
+public class Task implements Parcelable {
+  public static final Creator<Task> CREATOR = new Creator<Task>() {
+    @Override
+    public Task createFromParcel(Parcel in) {
+      return new Task(in);
+    }
 
-  private EditText editTextView;
+    @Override
+    public Task[] newArray(int size) {
+      return new Task[size];
+    }
+  };
+
 
   /** Name of task */
   private String taskName;
 
+  private Integer textBoxID;
+
+  protected Task(Parcel in) {
+    taskName = in.readString();
+    if (in.readByte() == 0) {
+      textBoxID = null;
+    } else {
+      textBoxID = in.readInt();
+    }
+  }
+
+
+  public Integer getTextBoxID() {
+    return textBoxID;
+  }
+
+  public void setTextBoxID(Integer textBoxID) {
+    this.textBoxID = textBoxID;
+  }
+
+
+
   /** Constructor */
-  Task(String taskName/**, EditText editTextView*/){
+  Task(String taskName){
     this.taskName = taskName;
     //editTextView.setOnTouchListener(onTouchListener);
     //this.editTextView = editTextView;
+  }
+
+  Task(String taskName, Integer textBoxID){
+    this.taskName = taskName;
+    this.textBoxID = textBoxID;
   }
 
   /**
@@ -39,10 +80,6 @@ public class Task {
     return taskName;
   }
 
-  public EditText getEditTextView(){
-    return editTextView;
-  }
-
   private View.OnTouchListener onTouchListener = (v, event) -> {
     if(event.getAction() == MotionEvent.ACTION_DOWN) {
       v.performClick();
@@ -53,4 +90,14 @@ public class Task {
   };
 
 
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(taskName);
+    dest.writeInt(textBoxID);
+  }
 }
