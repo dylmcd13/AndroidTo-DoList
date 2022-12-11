@@ -48,7 +48,7 @@ public class Delete extends AppCompatActivity {
         Intent deleteIntent = getIntent();
         taskBoxID = deleteIntent.getIntExtra("taskBoxID",-1);
         taskName = deleteIntent.getStringExtra("taskToDelete");
-        Log.i("TaskBoxID IN DELETE", String.valueOf(taskBoxID));
+
         Log.i("taskToDelete IN DELETE",taskName);
 
         super.onCreate(savedInstanceState);
@@ -98,6 +98,7 @@ public class Delete extends AppCompatActivity {
                             ring.stop();
                             ring.reset();
                             ring.release();
+                            Log.i("TaskBoxID IN DELETE", String.valueOf(taskBoxID));
                             finish();
 //                            startActivity(list);
 
@@ -115,8 +116,9 @@ public class Delete extends AppCompatActivity {
     private View.OnClickListener cancelListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(Delete.this, MainActivity.class));
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            //startActivity(new Intent(Delete.this, MainActivity.class));
+          finish();
+          overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
     };
 
