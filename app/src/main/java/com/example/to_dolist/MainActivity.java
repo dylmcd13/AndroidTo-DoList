@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
   /** Button for adding tasks */
   private Button addBtn;
 
+  public static String tasks="";
 
   /** Layout for list */
   LinearLayout list;
@@ -65,7 +67,32 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     this.initialize();
+    ImageButton home_button = (ImageButton) findViewById(R.id.home_button);
+    home_button.setOnClickListener(homeListener);
+
+    ImageButton completed_tasks_button = (ImageButton) findViewById(R.id.tasks_button);
+    completed_tasks_button.setOnClickListener(taskButtonListener);
   }
+
+  private View.OnClickListener homeListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      startActivity(new Intent(MainActivity.this, MainActivity.class));
+      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+  };
+
+  private View.OnClickListener taskButtonListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      Intent completeActivity = new Intent(MainActivity.this, CompletedTasks.class);
+      completeActivity.setAction(Intent.ACTION_SEND);
+      Log.i("tasks to complete:", tasks);
+      completeActivity.putExtra("taskComplete",tasks);
+      startActivity(completeActivity);
+      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+  };
 
 
   /**
@@ -91,11 +118,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
       taskBox.setId(View.generateViewId());
       Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
-
-
+      CheckBox complete = taskBox.findViewById(R.id.checkBox);
+      complete.setOnClickListener(completedListener);
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
       textBox.addTextChangedListener(textWatcher);
       textBox.requestFocus();
+
       deleteBtn.setOnClickListener(deleteListener);
 
       taskHashMap.put(taskBox.getId(),new Task(""));
@@ -104,6 +132,20 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       Log.e("ILLEGAL STATE",e.toString());
     }
   }
+
+  private View.OnClickListener completedListener = v -> {
+    RelativeLayout rel = (RelativeLayout) v.getParent();
+    EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
+    tasks += textBox.getText().toString() + "\0";
+    Log.i("tasks:", tasks);
+   // Intent completeActivity = new Intent(this, CompletedTasks.class);
+    //completeActivity.setAction(Intent.ACTION_SEND);
+    //completeActivity.putExtra("taskComplete",textBox.getText().toString());
+    taskHashMap.remove(rel.getId());
+    resetList();
+   // startActivityForResult(completeActivity, 1);
+  };
+
 
   private final TextWatcher textWatcher = new TextWatcher() {
     @Override
@@ -130,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
    */
   private View.OnClickListener deleteListener = v -> {
 
+
       RelativeLayout rel = (RelativeLayout) v.getParent();
       EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
       Intent deleteActivity = new Intent(this, Delete.class);
@@ -138,21 +181,21 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       deleteActivity.putExtra("taskToDelete",textBox.getText().toString());
       startActivityForResult(deleteActivity, 1);
       overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+
   };
 
   private void resetList(){
     list.removeAllViews();
     Collection c = taskHashMap.values();
-    //Log.i("Collection size", String.valueOf(c.size()));
-//    Set<Integer> mapKeySet = taskHashMap.keySet();
 
-    HashMap<Integer, Task> copy = new HashMap<>();
+    
 
 
     //mapKeySet.stream().min()
     for(Object obj : c){
+   
       Task task = (Task) obj;
-
+      HashMap<Integer, Task> copy = new HashMap<>();
       RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
       taskBox.setId(View.generateViewId());
       task.setTextBoxID(taskBox.getId());
@@ -163,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       copy.put(taskBox.getId(),task);
       list.addView(taskBox);
     }
-
 
     taskHashMap = copy;
   }
@@ -184,20 +226,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
   }
 
-
-
-
-  //  Comparator comparator = (o1, o2) -> {
-//    Task t1 = (Task) o1;
-//    Task t2 = (Task) o2;
-//
-//    Integer i1 = t1.getTextBoxID();
-//    Integer i2 = t2.getTextBoxID();
-//    if(i1 > i2)
-//      return i2;
-//    else
-//      return i1;
-//  };
 
 
 }
