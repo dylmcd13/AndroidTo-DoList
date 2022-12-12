@@ -12,7 +12,8 @@
     <RelativeLayout
         android:id="@+id/topBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp"
+        android:background="@color/dark_mode_action_bar">
 
         <TextView
             android:id="@+id/textView"
@@ -22,27 +23,12 @@
             android:background="#00FFFFFF"
             android:text="@string/completed_task" />
 
-        <Button
-            android:id="@+id/menu"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:alpha="1"
-            android:background="@drawable/ic_menu_button"
-            android:backgroundTint="#000000"
-            android:contentDescription="@string/menu_btn_description"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <EditText
-            android:id="@+id/nameOfTask"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:inputType="text"
-            android:text="@string/name_task"
-            android:textColor="@color/white"
-            android:layout_marginTop="150sp"
-            android:background="@color/black"
-            />
+        <View
+            android:id="@+id/topBarBottomDivider2"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/black" />
 
     </RelativeLayout>
 
@@ -70,31 +56,33 @@
 
         </ScrollView>
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_width="fill_parent"
             android:orientation="horizontal"
             android:weightSum="1.0">
-            <ImageButton
-                android:layout_weight="0.5"
-                android:layout_height="50sp"
-                android:id="@+id/home_button"
-                android:layout_marginBottom="0sp"
-                android:background="@color/white"
-                android:src="@drawable/ic_baseline_home_24"
-                android:textColor="@color/white" android:layout_width="0dip"/>
 
             <ImageButton
-                android:layout_weight="0.5"
-                android:paddingLeft="1dp"
+                android:id="@+id/home_button"
+                android:layout_width="0dip"
                 android:layout_height="50sp"
-                android:id="@+id/tasks_button"
                 android:layout_marginBottom="0sp"
+                android:layout_weight="0.5"
                 android:background="@color/dusty_purple"
+                android:src="@drawable/ic_baseline_home_24"
+                android:textColor="@color/white" />
+
+            <ImageButton
+                android:id="@+id/tasks_button"
+                android:layout_width="0dip"
+                android:layout_height="50sp"
+                android:layout_marginBottom="0sp"
+                android:layout_weight="0.5"
+                android:background="@color/white"
+                android:paddingLeft="1dp"
                 android:src="@drawable/ic_baseline_check_box_24"
-                android:textColor="@color/white" android:layout_width="0dip"/>
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </RelativeLayout>

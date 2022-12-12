@@ -112,7 +112,6 @@ public class Delete extends AppCompatActivity {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
                             dialog.cancel();
-                            finish();
                         }
                     }).show();
         }

@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -47,6 +48,8 @@ import java.util.SortedSet;
  * TODO: Make check box listener
  */
 public class MainActivity extends AppCompatActivity implements Serializable {
+
+  MediaPlayer scribble;
 
   /**
    * HashMap for holding tasks
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       Log.i("tasks to complete:", tasks);
       completeActivity.putExtra("taskComplete",tasks);
       startActivity(completeActivity);
-      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+      overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
   };
 
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     list = findViewById(R.id.addingTest);
     addBtn = findViewById(R.id.addTaskBtn);
     addBtn.setOnClickListener(addingTaskBox);
+    scribble = MediaPlayer.create(this, R.raw.scribble);
   }
 
 
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
    * When button is clicked, add checkbox, text and a border below the text to differentiate between tasks
    */
   private final View.OnClickListener addingTaskBox = v -> {
+    scribble.start();
     addTask();
     ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v.getRootView(),InputMethodManager.SHOW_IMPLICIT);
   };
@@ -123,9 +128,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
       textBox.addTextChangedListener(textWatcher);
       textBox.requestFocus();
-
       deleteBtn.setOnClickListener(deleteListener);
-
       taskHashMap.put(taskBox.getId(),new Task(""));
       list.addView(taskBox);
     }catch(IllegalStateException e){
@@ -137,13 +140,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     RelativeLayout rel = (RelativeLayout) v.getParent();
     EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
     tasks += textBox.getText().toString() + "\0";
-    Log.i("tasks:", tasks);
-   // Intent completeActivity = new Intent(this, CompletedTasks.class);
-    //completeActivity.setAction(Intent.ACTION_SEND);
-    //completeActivity.putExtra("taskComplete",textBox.getText().toString());
     taskHashMap.remove(rel.getId());
     resetList();
-   // startActivityForResult(completeActivity, 1);
   };
 
 
@@ -180,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       deleteActivity.putExtra("taskBoxID",rel.getId());
       deleteActivity.putExtra("taskToDelete",textBox.getText().toString());
       startActivityForResult(deleteActivity, 1);
-      overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+      overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
 
   };
 
@@ -188,26 +186,28 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     list.removeAllViews();
     Collection c = taskHashMap.values();
 
-    
 
+    HashMap<Integer, Task> copy = new HashMap<>();
 
     //mapKeySet.stream().min()
     for(Object obj : c){
    
       Task task = (Task) obj;
-      HashMap<Integer, Task> copy = new HashMap<>();
       RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
       taskBox.setId(View.generateViewId());
       task.setTextBoxID(taskBox.getId());
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
       Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
       deleteBtn.setOnClickListener(deleteListener);
+      CheckBox checkBox = taskBox.findViewById(R.id.checkBox);
+      checkBox.setOnClickListener(completedListener);
+
       textBox.setText(task.getTaskName());
       copy.put(taskBox.getId(),task);
       list.addView(taskBox);
     }
 
-    taskHashMap = copy;
+      taskHashMap = copy;
   }
 
   @Override
@@ -225,7 +225,5 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       }
     }
   }
-
-
 
 }

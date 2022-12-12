@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 public class CompletedTasks extends AppCompatActivity {
     String taskName="";
-    TextView completedTasksView;
+
     LinearLayout list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public class CompletedTasks extends AppCompatActivity {
         setContentView(R.layout.completed_tasks);
         ImageButton home_button = (ImageButton) findViewById(R.id.home_button);
         home_button.setOnClickListener(homeListener);
-        completedTasksView = findViewById(R.id.nameOfTask);
         Log.i("ONCREATE CALLED","");
         Intent taskIntent = getIntent();
         taskName = taskIntent.getStringExtra("taskComplete");
@@ -48,7 +47,7 @@ public class CompletedTasks extends AppCompatActivity {
     private View.OnClickListener homeListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(CompletedTasks.this, MainActivity.class));
+            finish();
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
     };
@@ -56,10 +55,11 @@ public class CompletedTasks extends AppCompatActivity {
     public void add(String [] tasks) {
         try {
             for (int i = 0; i < tasks.length;i++) {
-                RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
+                RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.completed_task, null);
                 taskBox.setId(View.generateViewId());
-                Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
+
                 CheckBox complete = taskBox.findViewById(R.id.checkBox);
+                complete.setChecked(true);
                 EditText textBox = taskBox.findViewById(R.id.editTextBox2);
                 textBox.setText(tasks[i]);
                 list.addView(taskBox);

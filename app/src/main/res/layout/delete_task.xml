@@ -38,39 +38,46 @@
         android:id="@+id/nameOfTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
         android:layout_centerInParent="true"
-        android:text="TextView" />
+        android:text="Hello"
+        android:textAlignment="center"
+        android:textSize="34sp" />
 
     <ImageView
-        android:layout_width="175sp"
-        android:layout_height="175sp"
-        android:layout_alignParentBottom="false"
+        android:id="@+id/imageView"
+        android:layout_width="252dp"
+        android:layout_height="314dp"
+        android:layout_centerInParent="false"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
         android:layout_marginTop="100dp"
-        android:src="@drawable/delete_sign" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/delete_button"
-        android:text="@string/confirm_delete"
-        android:textSize="25sp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/dusty_purple"
-        android:layout_marginBottom="60sp"
-        android:textColor="@color/white"/>
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
     <Button
+        android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/cancel_button"
-        android:text="@string/cancel_button"
-        android:textSize="25sp"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="100sp"
+        android:background="@android:drawable/button_onoff_indicator_off"
+        android:backgroundTint="@color/red"
+        android:text="@string/confirm_delete"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="60sp"
-        android:background="@color/dusty_purple"
-        android:textColor="@color/white"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="100dp"
+        android:background="@android:drawable/button_onoff_indicator_off"
+        android:text="@string/cancel_button"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_height="wrap_content"
