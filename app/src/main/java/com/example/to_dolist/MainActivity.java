@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -36,7 +37,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Main Activity Class
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       complete.setOnClickListener(completedListener);
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
       textBox.addTextChangedListener(textWatcher);
+      textBox.requestFocus();
 
       deleteBtn.setOnClickListener(deleteListener);
 
@@ -140,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     resetList();
    // startActivityForResult(completeActivity, 1);
   };
+
 
   private final TextWatcher textWatcher = new TextWatcher() {
     @Override
@@ -166,35 +172,40 @@ public class MainActivity extends AppCompatActivity implements Serializable {
    */
   private View.OnClickListener deleteListener = v -> {
 
-    RelativeLayout rel = (RelativeLayout) v.getParent();
-    EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
-    Intent deleteActivity = new Intent(this, Delete.class);
-    deleteActivity.setAction(Intent.ACTION_SEND);
-    deleteActivity.putExtra("taskBoxID",rel.getId());
-    deleteActivity.putExtra("taskToDelete",textBox.getText().toString());
-    startActivityForResult(deleteActivity, 1);
+
+      RelativeLayout rel = (RelativeLayout) v.getParent();
+      EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
+      Intent deleteActivity = new Intent(this, Delete.class);
+      deleteActivity.setAction(Intent.ACTION_SEND);
+      deleteActivity.putExtra("taskBoxID",rel.getId());
+      deleteActivity.putExtra("taskToDelete",textBox.getText().toString());
+      startActivityForResult(deleteActivity, 1);
+      overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+
   };
 
   private void resetList(){
     list.removeAllViews();
     Collection c = taskHashMap.values();
-    HashMap<Integer,Task> copy = new HashMap<>();
 
-    taskHashMap.forEach((key, value)->{
-      Log.i("Task | "+key,value.getTaskName());
+    
+
+
+    //mapKeySet.stream().min()
+    for(Object obj : c){
+   
+      Task task = (Task) obj;
+      HashMap<Integer, Task> copy = new HashMap<>();
       RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
       taskBox.setId(View.generateViewId());
-      value.setTextBoxID(taskBox.getId());
+      task.setTextBoxID(taskBox.getId());
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
-      CheckBox complete = taskBox.findViewById(R.id.checkBox);
-      complete.setOnClickListener(completedListener);
       Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
       deleteBtn.setOnClickListener(deleteListener);
-      textBox.setText(value.getTaskName());
-      copy.put(taskBox.getId(),value);
+      textBox.setText(task.getTaskName());
+      copy.put(taskBox.getId(),task);
       list.addView(taskBox);
-    });
-
+    }
 
     taskHashMap = copy;
   }
@@ -214,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       }
     }
   }
+
 
 
 }
