@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -35,7 +36,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Main Activity Class
@@ -89,10 +93,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
 
 
-
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
       textBox.addTextChangedListener(textWatcher);
-
+      textBox.requestFocus();
       deleteBtn.setOnClickListener(deleteListener);
 
       taskHashMap.put(taskBox.getId(),new Task(""));
@@ -134,25 +137,32 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       deleteActivity.putExtra("taskBoxID",rel.getId());
       deleteActivity.putExtra("taskToDelete",textBox.getText().toString());
       startActivityForResult(deleteActivity, 1);
+      overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
   };
 
   private void resetList(){
     list.removeAllViews();
     Collection c = taskHashMap.values();
-    HashMap<Integer,Task> copy = new HashMap<>();
+    //Log.i("Collection size", String.valueOf(c.size()));
+//    Set<Integer> mapKeySet = taskHashMap.keySet();
 
-    taskHashMap.forEach((key, value)->{
-      Log.i("Task | "+key,value.getTaskName());
+    HashMap<Integer, Task> copy = new HashMap<>();
+
+
+    //mapKeySet.stream().min()
+    for(Object obj : c){
+      Task task = (Task) obj;
+
       RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
       taskBox.setId(View.generateViewId());
-      value.setTextBoxID(taskBox.getId());
+      task.setTextBoxID(taskBox.getId());
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
       Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
       deleteBtn.setOnClickListener(deleteListener);
-      textBox.setText(value.getTaskName());
-      copy.put(taskBox.getId(),value);
+      textBox.setText(task.getTaskName());
+      copy.put(taskBox.getId(),task);
       list.addView(taskBox);
-    });
+    }
 
 
     taskHashMap = copy;
@@ -173,6 +183,21 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       }
     }
   }
+
+
+
+
+  //  Comparator comparator = (o1, o2) -> {
+//    Task t1 = (Task) o1;
+//    Task t2 = (Task) o2;
+//
+//    Integer i1 = t1.getTextBoxID();
+//    Integer i2 = t2.getTextBoxID();
+//    if(i1 > i2)
+//      return i2;
+//    else
+//      return i1;
+//  };
 
 
 }

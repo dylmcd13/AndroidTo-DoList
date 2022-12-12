@@ -2,14 +2,18 @@ package com.example.to_dolist;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Delete extends AppCompatActivity {
+
+  private MediaPlayer ring;
 
     /**
      * ID of task box in the HashMap
@@ -48,7 +54,9 @@ public class Delete extends AppCompatActivity {
         Intent deleteIntent = getIntent();
         taskBoxID = deleteIntent.getIntExtra("taskBoxID",-1);
         taskName = deleteIntent.getStringExtra("taskToDelete");
-
+        ring = MediaPlayer.create(this, R.raw.garbage);
+//        ring.setOnPreparedListener();
+//        ring.setOnCompletionListener();
         Log.i("taskToDelete IN DELETE",taskName);
 
         super.onCreate(savedInstanceState);
@@ -87,7 +95,6 @@ public class Delete extends AppCompatActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            MediaPlayer ring= MediaPlayer.create(Delete.this,R.raw.garbage);
                             ring.start();
                             Intent list = new Intent();
                             list.putExtra("taskToDelete",taskName);
@@ -95,9 +102,6 @@ public class Delete extends AppCompatActivity {
                             setResult(Activity.RESULT_OK,list);
 
                             Toast.makeText(Delete.this, "Task Deleted", Toast.LENGTH_SHORT).show();
-                            ring.stop();
-                            ring.reset();
-                            ring.release();
                             Log.i("TaskBoxID IN DELETE", String.valueOf(taskBoxID));
                             finish();
 //                            startActivity(list);
@@ -108,10 +112,21 @@ public class Delete extends AppCompatActivity {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
                             dialog.cancel();
+                            finish();
                         }
                     }).show();
         }
     };
+
+    @Override
+    protected void onStop() {
+      super.onStop();
+    }
+
+    protected void onDestroy() {
+      ring.release();
+      super.onDestroy();
+    }
 
     private View.OnClickListener cancelListener = new View.OnClickListener() {
         @Override
@@ -137,4 +152,5 @@ public class Delete extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     };
+
 }

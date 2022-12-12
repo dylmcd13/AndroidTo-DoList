@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="dusty_purple">#887694</color>
-    <color name="dark_mode_background">#121212</color>
+    <color name="dark_mode_background">#202020</color>
+    <color name="dark_mode_action_bar">#121212</color>
     <color name="blank_edit_text_view">#00FFFFFF</color>
 </resources>
