@@ -10,4 +10,6 @@
     <string name="delete_task">Delete Task</string>
     <string name="confirm_delete">Delete</string>
     <string name="task_value"></string>
+
+    <string name="completed_task">Completed Tasks</string>
 </resources>
