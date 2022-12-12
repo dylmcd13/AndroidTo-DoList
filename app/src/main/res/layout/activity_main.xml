@@ -66,9 +66,37 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="60dp"
             android:background="@android:drawable/ic_input_add"
             android:contentDescription="@string/add_btn_description" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+        <ImageButton
+            android:layout_weight="0.5"
+            android:layout_height="50sp"
+            android:id="@+id/home_button"
+            android:layout_marginBottom="0sp"
+            android:background="@color/white"
+            android:src="@drawable/ic_baseline_home_24"
+            android:textColor="@color/white" android:layout_width="0dip"/>
+
+        <ImageButton
+            android:layout_weight="0.5"
+            android:paddingLeft="1dp"
+            android:layout_height="50sp"
+            android:id="@+id/tasks_button"
+            android:layout_marginBottom="0sp"
+            android:background="@color/dusty_purple"
+            android:src="@drawable/ic_baseline_check_box_24"
+            android:textColor="@color/white" android:layout_width="0dip"/>
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>
