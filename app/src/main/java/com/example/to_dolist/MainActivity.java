@@ -13,13 +13,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -42,10 +47,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
   /**
    * HashMap for holding tasks
    */
-  private final HashMap<Integer,Task> taskHashMap = new HashMap<>();
+  private HashMap<Integer,Task> taskHashMap = new HashMap<>();
 
   /** Button for adding tasks */
   private Button addBtn;
+
+  public static String tasks="";
 
   /** Layout for list */
   LinearLayout list;
@@ -56,7 +63,32 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     this.initialize();
+    ImageButton home_button = (ImageButton) findViewById(R.id.home_button);
+    home_button.setOnClickListener(homeListener);
+
+    ImageButton completed_tasks_button = (ImageButton) findViewById(R.id.tasks_button);
+    completed_tasks_button.setOnClickListener(taskButtonListener);
   }
+
+  private View.OnClickListener homeListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      startActivity(new Intent(MainActivity.this, MainActivity.class));
+      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+  };
+
+  private View.OnClickListener taskButtonListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      Intent completeActivity = new Intent(MainActivity.this, CompletedTasks.class);
+      completeActivity.setAction(Intent.ACTION_SEND);
+      Log.i("tasks to complete:", tasks);
+      completeActivity.putExtra("taskComplete",tasks);
+      startActivity(completeActivity);
+      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+  };
 
 
   /**
@@ -82,10 +114,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
       RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
       taskBox.setId(View.generateViewId());
       Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
-
-
+      CheckBox complete = taskBox.findViewById(R.id.checkBox);
+      complete.setOnClickListener(completedListener);
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
-      textBox.setOnFocusChangeListener(textBoxChangeListener);
+      textBox.addTextChangedListener(textWatcher);
 
       deleteBtn.setOnClickListener(deleteListener);
 
@@ -96,18 +128,34 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
   }
 
-  private final View.OnFocusChangeListener textBoxChangeListener = (v, hasFocus) -> {
-    if(hasFocus){
-      try {
-        RelativeLayout taskBox = (RelativeLayout) v.getParent();
-        Log.i("TaskBox id", String.valueOf(taskBox.getId()));
-        EditText textBox = v.findViewById(R.id.editTextBox2);
-        Log.i("textBox Contents",textBox.getText().toString());
-        //TODO: make this update task obj in array
-          taskHashMap.get(taskBox.getId()).changeTask(textBox.getText().toString());
-      }catch(NullPointerException e){
-          Log.e("NULL", e.toString());
-      }
+  private View.OnClickListener completedListener = v -> {
+    RelativeLayout rel = (RelativeLayout) v.getParent();
+    EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
+    tasks += textBox.getText().toString() + "\0";
+    Log.i("tasks:", tasks);
+   // Intent completeActivity = new Intent(this, CompletedTasks.class);
+    //completeActivity.setAction(Intent.ACTION_SEND);
+    //completeActivity.putExtra("taskComplete",textBox.getText().toString());
+    taskHashMap.remove(rel.getId());
+    resetList();
+   // startActivityForResult(completeActivity, 1);
+  };
+
+  private final TextWatcher textWatcher = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+      View v = (View) getCurrentFocus().getParent();
+      taskHashMap.get(v.getId()).changeTask(s.toString());
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
   };
 
@@ -118,47 +166,37 @@ public class MainActivity extends AppCompatActivity implements Serializable {
    */
   private View.OnClickListener deleteListener = v -> {
 
-      Log.i("HASHMAP BEFORE DELETING", taskHashMap.toString());
-
-      RelativeLayout rel = (RelativeLayout) v.getParent();
-      EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
-      Intent deleteActivity = new Intent(this, Delete.class);
-      deleteActivity.setAction(Intent.ACTION_SEND);
-      deleteActivity.putExtra("taskBoxID",rel.getId());
-      deleteActivity.putExtra("taskToDelete",textBox.getText().toString());
-      Log.i("HashMap at"+rel.getId(),taskHashMap.get(rel.getId()).getTaskName());
-      startActivityForResult(deleteActivity, 1);
-
-//      finish();
+    RelativeLayout rel = (RelativeLayout) v.getParent();
+    EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
+    Intent deleteActivity = new Intent(this, Delete.class);
+    deleteActivity.setAction(Intent.ACTION_SEND);
+    deleteActivity.putExtra("taskBoxID",rel.getId());
+    deleteActivity.putExtra("taskToDelete",textBox.getText().toString());
+    startActivityForResult(deleteActivity, 1);
   };
 
   private void resetList(){
     list.removeAllViews();
-    Log.i("LIST CHILD COUNT", String.valueOf(list.getChildCount()));
-    Log.i("HASH MAP SIZE", String.valueOf(taskHashMap.size()));
     Collection c = taskHashMap.values();
-    for(Object obj : c){
-      Task task = (Task) obj;
+    HashMap<Integer,Task> copy = new HashMap<>();
+
+    taskHashMap.forEach((key, value)->{
+      Log.i("Task | "+key,value.getTaskName());
       RelativeLayout taskBox = (RelativeLayout) getLayoutInflater().inflate(R.layout.edit_text, null);
-//      taskBox.setId(task.getTextBoxID());
+      taskBox.setId(View.generateViewId());
+      value.setTextBoxID(taskBox.getId());
       EditText textBox = taskBox.findViewById(R.id.editTextBox2);
-      textBox.setText(task.getTaskName());
+      CheckBox complete = taskBox.findViewById(R.id.checkBox);
+      complete.setOnClickListener(completedListener);
+      Button deleteBtn = taskBox.findViewById(R.id.deleteBtn);
+      deleteBtn.setOnClickListener(deleteListener);
+      textBox.setText(value.getTaskName());
+      copy.put(taskBox.getId(),value);
       list.addView(taskBox);
-//      Log.i("Task FROM COLLECTION",task.getTaskName());
-    }
-    //Task[] taskArr = new Task[c.size()];
-    //c.toArray(taskArr);
-//    for(Task task : taskArr){
-      Log.i("TASK COLLECTION", c.toString());
-//    }
-//    for(Task task : taskArrayList){
-//
-//
-////      taskBox.setId(task.getTextBoxID()); //TODO: might need to do, idk
-//      EditText textBox = taskBox.findViewById(R.id.editTextBox2);
-//      textBox.setText(task.getTaskName());
-//      list.addView(taskBox);
-//    }
+    });
+
+
+    taskHashMap = copy;
   }
 
   @Override
@@ -167,21 +205,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     if (requestCode == 1) {
       if(resultCode == Activity.RESULT_OK){
-        String taskToDelete = data.getStringExtra("taskToDelete");
         int taskBoxID = data.getIntExtra("taskBoxID",-1);
-        Log.i("TASK TO DELETE",taskToDelete);
-        if(taskBoxID != -1)
-          taskHashMap.remove(taskBoxID);
-//        for(int i=0;i<taskArrayList.size();i++){
-//          String taskName = taskArrayList.get(i).getTaskName();
-//          if(taskName.equals(taskToDelete)){
-//            taskArrayList.remove(i);
-//            taskHashMap.remove(taskArrayList.get(i).getTextBoxID());
-//          }
-//        }
+        taskHashMap.remove(taskBoxID);
         resetList();
-
-
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         Log.i("NO RESULT","");
