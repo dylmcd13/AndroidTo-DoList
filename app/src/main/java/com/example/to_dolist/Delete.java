@@ -55,19 +55,10 @@ public class Delete extends AppCompatActivity {
         taskBoxID = deleteIntent.getIntExtra("taskBoxID",-1);
         taskName = deleteIntent.getStringExtra("taskToDelete");
         ring = MediaPlayer.create(this, R.raw.garbage);
-//        ring.setOnPreparedListener();
-//        ring.setOnCompletionListener();
-        Log.i("taskToDelete IN DELETE",taskName);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_task);
 
-//        Bundle arrayListBundle = deleteIntent.getBundleExtra("BUNDLE");
-//        Log.i("tasks",tasks.get(indexOfTask).toString());
-//        tasks = (ArrayList<TaskBoxLayout>) deleteIntent.getSerializableExtra("tasks");
-        //tasks = deleteIntent.getExtra;
-//        for(TaskBoxLayout taskLayout : tasks)
-//          Log.i("task",taskLayout.getTask().getTaskName());
         deleteTextView = findViewById(R.id.nameOfTask);
         deleteTextView.setText(taskName);
 
@@ -102,9 +93,7 @@ public class Delete extends AppCompatActivity {
                             setResult(Activity.RESULT_OK,list);
 
                             Toast.makeText(Delete.this, "Task Deleted", Toast.LENGTH_SHORT).show();
-                            Log.i("TaskBoxID IN DELETE", String.valueOf(taskBoxID));
                             finish();
-//                            startActivity(list);
 
                         }})
                     .setNegativeButton(android.R.string.no,new DialogInterface.OnClickListener() {
@@ -130,7 +119,7 @@ public class Delete extends AppCompatActivity {
     private View.OnClickListener cancelListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //startActivity(new Intent(Delete.this, MainActivity.class));
+            
           finish();
           overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
