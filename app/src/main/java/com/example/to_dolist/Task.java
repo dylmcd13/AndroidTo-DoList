@@ -56,8 +56,6 @@ public class Task implements Parcelable {
   /** Constructor */
   Task(String taskName){
     this.taskName = taskName;
-    //editTextView.setOnTouchListener(onTouchListener);
-    //this.editTextView = editTextView;
   }
 
   Task(String taskName, Integer textBoxID){
@@ -83,7 +81,6 @@ public class Task implements Parcelable {
   private View.OnTouchListener onTouchListener = (v, event) -> {
     if(event.getAction() == MotionEvent.ACTION_DOWN) {
       v.performClick();
-      Log.i("Task Name",getTaskName());
       return true;
     }
     return false;
