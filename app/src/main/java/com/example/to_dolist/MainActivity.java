@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    Log.i("ONCREATE CALLED","");
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     this.initialize();
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public void onClick(View v) {
       Intent completeActivity = new Intent(MainActivity.this, CompletedTasks.class);
       completeActivity.setAction(Intent.ACTION_SEND);
-      Log.i("tasks to complete:", tasks);
       completeActivity.putExtra("taskComplete",tasks);
       startActivity(completeActivity);
       overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -189,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     HashMap<Integer, Task> copy = new HashMap<>();
 
-    //mapKeySet.stream().min()
     for(Object obj : c){
    
       Task task = (Task) obj;
@@ -220,9 +217,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         taskHashMap.remove(taskBoxID);
         resetList();
       }
-      if (resultCode == Activity.RESULT_CANCELED) {
-        Log.i("NO RESULT","");
-      }
+      
     }
   }
 
