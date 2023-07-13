@@ -63,24 +63,4 @@ public class TaskBoxLayout implements Serializable {
     task.changeTask(taskName);
   }
 
-
-
-//  /**
-//   * Listener for deleting tasks
-//   *
-//   * Grabs TextBox layout and retrieves textBox info from the child
-//   */
-//  private View.OnClickListener deleteListener = v -> {
-//    try{
-//      RelativeLayout rel = (RelativeLayout) v.getParent();
-//      EditText textBox = (EditText) rel.getChildAt(1); //EditText is always at index 1?
-//      Intent deleteActivity = new Intent(context, Delete.class);
-//      deleteActivity.putExtra("indexedAt",index);
-//      deleteActivity.putExtra("nameOfTask",textBox.getText().toString());
-//      context.startActivity(deleteActivity);
-//    }catch(NullPointerException e){
-////      Log.e("ERROR",e.toString());
-//      e.printStackTrace();
-//    }
-//  };
 }
